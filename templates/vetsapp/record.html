@@ -1,0 +1,64 @@
+{% include 'include/base.html' %}
+{% load crispy_forms_tags %}
+{% if messages %}
+
+{% for msg in messages %}
+
+{% if msg.tatg == 'success' %}
+<div class="alert alert-info" role="alert">
+    {{ msg }}
+</div>
+{% endif %}
+
+{% endfor %}
+
+{% endif %}
+<div class="container-fluid mt-3">
+    <div class="padding">
+        <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit">Подать заявку</button>
+            <span>{{ bag }}</span>
+        </form>
+    </div>
+</div>
+{% include 'include/footer.html' %}
+<script>
+    jQuery(document).ready(function () {
+        var spec = $('#id_species').find('option:selected').text();
+        console.log(spec)
+        switch (spec) {
+            case 'Собака':
+                $('#div_id_breed_dog').show();
+                $('#div_id_breed_cat').hide();
+                break;
+            case 'Кошка':
+                $('#div_id_breed_dog').hide();
+                $('#div_id_breed_cat').show();
+                break;
+            default:
+                $('#div_id_breed_dog').hide();
+                $('#div_id_breed_cat').hide();
+                break;
+        }
+    });
+    jQuery('#id_species').on('change', function () {
+        var spec = $(this).find('option:selected').text();
+
+        if (spec == 'Собака') {
+            $('#div_id_breed_cat').hide();
+            $('#div_id_breed_dog').show();
+
+        } else if (spec == 'Кошка') {
+            $('#div_id_breed_dog').hide();
+            $('#div_id_breed_cat').show();
+
+        } else if (spec != 'Собака' != 'Кошка') {
+            $('#div_id_breed_dog').hide();
+            $('#div_id_breed_cat').hide();
+
+        }
+
+    });
+</script>
