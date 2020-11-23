@@ -1,0 +1,62 @@
+{% include 'include/base.html' %}
+<div>
+    <span>ваши Заявки</span>|<span><a class="nav-link" href="{% url 'record' %}">добавить заявку</a></span>
+    {% for field in application %}
+    <table class="table table-sm table-dark">
+        <tbody>
+            <tr>
+                <td>имя</td>
+                <td>отчество</td>
+                <td>фамилия</td>
+                <td>телефон</td>
+                <td class="spec_td">{{field.species}}</td>
+                <td>размер</td>
+                <td>день рождения</td>
+                <td>визит</td>
+                <td>услуга</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>{{field.first_name}}</td>
+                <td>{{field.midle_name}}</td>
+                <td>{{field.last_name}}</td>
+                <td>{{field.phone}}</td>
+                <td class="not_breed">Нет породы</td>
+                <td class="breed_dog">{{field.breed_dog}}</td>
+                <td class="breed_cat">{{field.breed_cat}}</td>
+                <td>{{field.pet_size}}</td>
+                <td>{{field.birthday}}</td>
+                <td>{{field.vizits}}</td>
+                <td>{{field.service_pet}}</td>
+            </tr>
+        </tfoot>
+    </table>
+    {% endfor %}
+
+</div>
+{% include 'include/footer.html' %}
+<script>
+    $(document).ready(function () {
+        $('.spec_td, .breed_dog, .breed_cat').each(function () {
+            if ($(this).text() == 'Собака' && $(this).parent().parent().next().find('.breed_dog')
+            .text() != 'None') {
+                $(this).parent().parent().next().find('.breed_dog').show();
+                $(this).parent().parent().next().find('.breed_cat').hide();
+                $(this).parent().parent().next().find('.not_breed').hide();
+            } else if ($(this).text() == 'Кошка' && $(this).parent().parent().next().find('.breed_cat')
+                .text() !=
+                'None') {
+                $(this).parent().parent().next().find('.breed_dog').hide();
+                $(this).parent().parent().next().find('.breed_cat').show();
+                $(this).parent().parent().next().find('.not_breed').hide();
+            } else if ($(this).text() == 'Собака' || $(this).text() == 'Кошка' &&
+                $(this).parent().parent().next().find('.breed_dog').text() == 'None' ||
+                $(this).parent().parent().next().find('.breed_cat').text() == 'None') {
+                $(this).parent().parent().next().find('.breed_dog').hide();
+                $(this).parent().parent().next().find('.breed_cat').hide();
+                $(this).parent().parent().next().find('.not_breed').show();
+            }
+        })
+    })
+</script>

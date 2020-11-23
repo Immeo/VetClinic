@@ -1,13 +1,12 @@
 from django.db import models
-from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.datetime_safe import date
 from django.utils.translation import ugettext_lazy as _
-# Create your models here.
 
 user_default = 'Пользователь'
 spec_pets = 'Вид животного'
+
 
 class animal(models.Model):
     """type select module"""
@@ -78,14 +77,30 @@ class application(models.Model):
         verbose_name = _('Заявки')
         verbose_name_plural = _('Заявки')
 
-    user = models.OneToOneField(
+    user_nickname = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        verbose_name='Пользователь',
+        verbose_name=_("User"),
+        max_length=100,
+        unique=False,
         null=True,
-        default=user_default,
+        blank=True
+        )
+    first_name = models.CharField(
+        _('first name'),
+        max_length=30,
         blank=True,
-    )
+        unique=False)
+    midle_name = models.CharField(
+        _('отчество'),
+        max_length=30,
+        blank=True,
+        unique=False)
+    last_name = models.CharField(
+        _('last name'),
+        max_length=150,
+        blank=True,
+        unique=False)
     phone = models.CharField(
         max_length=14,
         verbose_name='Номер телефона'
@@ -97,15 +112,19 @@ class application(models.Model):
         blank=True,
         verbose_name='Вид животного',
     )
-    breed_dog = models.ManyToManyField(
-        'breed_dog',
+    breed_dog = models.ForeignKey(
+        breed_dog,
+        on_delete=models.PROTECT,
         verbose_name='Порода собаки',
+        null=True,
         related_name='breed_dog',
         blank=True,
     )
-    breed_cat = models.ManyToManyField(
-        'breed_cat',
+    breed_cat = models.ForeignKey(
+        breed_cat,
+        on_delete=models.PROTECT,
         verbose_name='Порода кошки',
+        null=True,
         related_name='breed_cat',
         blank=True,
     )
@@ -115,11 +134,16 @@ class application(models.Model):
     )
     birthday = models.DateField(
         verbose_name='день рождения',
-        default=date.today
+        default=date.today,
+        unique=False,
+        unique_for_date=False
+
     )
     vizits = models.DateField(
         verbose_name='день визита',
-        default=date.today
+        default=date.today,
+        unique=False,
+        unique_for_date=False
     )
     service_pet = models.ForeignKey(
         service,
@@ -127,10 +151,12 @@ class application(models.Model):
         on_delete=models.PROTECT,
         default='Услуга'
     )
-    date_create = models.DateTimeField(
-        auto_now_add=False,
-        verbose_name='Дата заявки'
-        )
-
+    
     def __str__(self):
-        return '%s %s %s %s' % (self.phone, self.vizits, self.service_pet, self.date_create)
+        return '%s %s %s %s %s' % (
+            self.last_name,
+            self.first_name,
+            self.phone,
+            self.vizits,
+            self.service_pet,
+        )

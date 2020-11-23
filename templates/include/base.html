@@ -18,6 +18,17 @@
     </div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Ветклиника</a>
+        <span>
+            {% if user.is_authenticated %}
+            <span id="active_user_name" class="nav-link">{{ request.user }}</span>
+            <a class="nav-link" href="{% url 'account_logout' %}">Sign Out</a>
+            <a class="nav-link" href="{% url 'profile' %}">профиль</a>
+            {% else %}
+            <a class="nav-link" href="{% url 'account_login' %}">Sign In</a>
+            <a class="nav-link" href="{% url 'account_signup' %}">Sign Up</a>
+            {% endif %}
+
+        </span>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -30,16 +41,23 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'record' %}">Запись на прием</a>
                 </li>
-                {% if user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'account_email' %}">Change E-mail</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'account_logout' %}">Sign Out</a></li>
-                {% else %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'account_login' %}">Sign In</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'account_signup' %}">Sign Up</a></li>
-                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Скрыть</a>
                 </li>
             </ul>
         </div>
     </nav>
+
+    {% if messages %}
+
+    {% for msg in messages %}
+
+    {% if msg.tatg == 'success' %}
+    <div class="alert alert-info" role="alert">
+        {{ msg }}
+    </div>
+    {% endif %}
+
+    {% endfor %}
+
+    {% endif %}

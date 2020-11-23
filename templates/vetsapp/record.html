@@ -17,7 +17,18 @@
     <div class="padding">
         <form method="post">
             {% csrf_token %}
-            {{ form|crispy }}
+            {{form.user_nickname|as_crispy_field}}
+            {{form.first_name|as_crispy_field}}
+            {{form.midle_name|as_crispy_field}}
+            {{form.last_name|as_crispy_field}}
+            {{form.phone|as_crispy_field}}
+            {{form.species|as_crispy_field}}
+            {{form.breed_dog|as_crispy_field}}
+            {{form.breed_cat|as_crispy_field}}
+            {{form.pet_size|as_crispy_field}}
+            {{form.birthday|as_crispy_field}}
+            {{form.vizits|as_crispy_field}}
+            {{form.service_pet|as_crispy_field}}
             <button type="submit">Подать заявку</button>
             <span>{{ bag }}</span>
         </form>
@@ -26,8 +37,11 @@
 {% include 'include/footer.html' %}
 <script>
     jQuery(document).ready(function () {
+        var detect_user = $('#active_user_name').text();
+        $('#id_user_nickname option').filter(function () { return $(this).html() == $('#active_user_name').text();
+        }).prop('selected', true);
+        $('#div_id_user_nickname').hide();
         var spec = $('#id_species').find('option:selected').text();
-        console.log(spec)
         switch (spec) {
             case 'Собака':
                 $('#div_id_breed_dog').show();

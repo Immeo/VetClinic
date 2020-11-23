@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
-
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -41,8 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google', 
     'vetsapp',
     'crispy_forms'
 ]
@@ -78,8 +75,6 @@ TEMPLATES = [
     },
 ]
 
-ACCOUNT_FORMS = {'signup': 'vetsapp.forms.MyCustomSignupForm'}
-
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 WSGI_APPLICATION = 'VetClinic.wsgi.application'
@@ -95,13 +90,15 @@ DATABASES = {
     }
 }
 
-AUTHENTICATION_BACKENDS = (
+AUTHENTICATION_BACKENDS = [
+
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
 
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
-)
+
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -146,7 +143,4 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-# AUTH_USER_MODEL = 'vetsapp.Customer'
-
 SITE_ID = 1
-# LOGIN_REDI
